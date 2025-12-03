@@ -76,6 +76,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9122029669293566174, guid: 7e7dc4197cb8b9f479a3065b59844f43, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122029669293566174, guid: 7e7dc4197cb8b9f479a3065b59844f43, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9146093606551992072, guid: 7e7dc4197cb8b9f479a3065b59844f43, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.75

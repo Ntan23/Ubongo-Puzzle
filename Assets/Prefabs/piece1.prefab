@@ -196,8 +196,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4002881576393881061}
   - component: {fileID: 5357820100714162615}
-  - component: {fileID: 2919330463471228201}
   - component: {fileID: 5269700206602037928}
+  - component: {fileID: 9122029669293566174}
   m_Layer: 6
   m_Name: piece1
   m_TagString: Untagged
@@ -276,8 +276,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2919330463471228201
-BoxCollider2D:
+--- !u!114 &5269700206602037928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6651282546229702284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2105b1a4684e04fa71d78d48441f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapRadius: 0.4
+  rotateDuration: 0.25
+  moveDuration: 0.25
+  isPlaced: 0
+  blocks:
+  - {fileID: 1896751217516763315}
+  - {fileID: 6563205375090048063}
+  - {fileID: 7212646442730266185}
+  - {fileID: 5156535052376514885}
+  blocksTransform:
+  - {fileID: 4440121895010989168}
+  - {fileID: 5321895206945875393}
+  - {fileID: 5122144860957938770}
+  - {fileID: 6918779873815865077}
+  extraOffsetX: 0
+  extraOffsetY: 0
+  spriteRenderer: {fileID: 5357820100714162615}
+  selectedColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+  unselectedColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!60 &9122029669293566174
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -310,7 +341,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.75, y: 0.5}
@@ -320,39 +351,17 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 3}
-  m_EdgeRadius: 0
---- !u!114 &5269700206602037928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6651282546229702284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e2105b1a4684e04fa71d78d48441f1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snapRadius: 0.4
-  rotateDuration: 0.25
-  moveDuration: 0.25
-  isPlaced: 0
-  blocks:
-  - {fileID: 1896751217516763315}
-  - {fileID: 6563205375090048063}
-  - {fileID: 7212646442730266185}
-  - {fileID: 5156535052376514885}
-  blocksTransform:
-  - {fileID: 4440121895010989168}
-  - {fileID: 5321895206945875393}
-  - {fileID: 5122144860957938770}
-  - {fileID: 6918779873815865077}
-  extraOffsetX: 0
-  extraOffsetY: 0
-  spriteRenderer: {fileID: 5357820100714162615}
-  selectedColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
-  unselectedColor: {r: 1, g: 1, b: 1, a: 1}
+  m_Points:
+    m_Paths:
+    - - {x: -1.5, y: 1.5}
+      - {x: -1.5, y: -0.5}
+      - {x: -0.5, y: -0.5}
+      - {x: -0.5, y: -1.5}
+      - {x: 0.5, y: -1.5}
+      - {x: 0.5, y: 0.5}
+      - {x: -0.5, y: 0.5}
+      - {x: -0.5, y: 1.5}
+  m_UseDelaunayMesh: 0
 --- !u!1 &6736914468061954777
 GameObject:
   m_ObjectHideFlags: 0
