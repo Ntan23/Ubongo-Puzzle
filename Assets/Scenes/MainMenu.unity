@@ -825,15 +825,47 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 2051126252}
     m_Modifications:
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.16429341
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8463793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -845,14 +877,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
       propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
@@ -876,6 +916,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+--- !u!224 &918026536 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5872267542613542090, guid: be47561035ec52348a696ad590fdd90b, type: 3}
+  m_PrefabInstance: {fileID: 918026535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1218893414
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,6 +1219,7 @@ RectTransform:
   - {fileID: 520638887}
   - {fileID: 2133957384}
   - {fileID: 1791564135}
+  - {fileID: 918026536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1322,6 +1368,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 755534521}
-  - {fileID: 918026535}
   - {fileID: 2051126252}
   - {fileID: 859992754}
