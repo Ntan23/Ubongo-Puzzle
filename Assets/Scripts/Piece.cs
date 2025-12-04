@@ -138,7 +138,7 @@ public class Piece : MonoBehaviour
 
     private void TrySnapToBoard()
     {
-        if (IsValidAlignment(out Vector3 snapPos))
+        if (IsValidPosition(out Vector3 snapPos))
         {
             StartCoroutine(MovePiece(snapPos));
 
@@ -157,7 +157,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private bool IsValidAlignment(out Vector3 resultPos)
+    private bool IsValidPosition(out Vector3 resultPos)
     {
         resultPos = Vector3.zero;
 
@@ -193,7 +193,7 @@ public class Piece : MonoBehaviour
 
             if (snapPos.x % 1 != 0 || snapPos.y % 1 != 0)
             {
-                return false;  
+                return false;
             }
         }
         else
@@ -206,82 +206,6 @@ public class Piece : MonoBehaviour
 
         resultPos = snapPos;
         return true;
-
-        // foreach (Block block in blocks)
-        // {
-        //     if (block.currentSlot == null) return false;
-
-        //     if (block.currentSlot != null && block.currentSlot.isFilled)
-        //     {
-        //         return false;
-        //     }
-        // }
-
-        // foreach (Block block in blocks)
-        // {
-        //     Vector3 blockLocal = blocks[0].transform.localPosition;
-        //     Vector3 slotPos = block.currentSlot.transform.position;
-
-        //     Vector3 snapPos = slotPos - blockLocal;
-        //     snapPos.x = Mathf.RoundToInt(snapPos.x) + extraOffsetX;
-        //     snapPos.y = Mathf.RoundToInt(snapPos.y) + extraOffsetY;
-
-        //     resultPos = snapPos;
-        //     return true;
-        // }
-
-        // return false;
-    }
-
-    // bool IsValidPlacement(Vector3 pos)
-    // {
-    //     foreach (Block block in blocks)
-    //     {
-    //         Vector3 checkPos = pos + block.transform.localPosition;
-
-    //         Collider2D hit = Physics2D.OverlapPoint(checkPos);
-    //         if (!hit) return false;
-
-    //         BoardSlot slot = hit.GetComponent<BoardSlot>();
-    //         if (!slot || slot.isFilled) return false;
-    //     }
-
-    //     return true;
-    // }
-
-    bool IsAlign(Vector3 pos)
-    {
-        Vector3 initialPos = transform.position;
-        transform.position = pos;
-
-        foreach (Block block in blocks)
-        {
-            Collider2D hit = Physics2D.OverlapPoint(block.transform.position);
-
-            if (hit == null)
-            {
-                transform.position = initialPos;
-                return false;
-            }
-
-            BoardSlot slot = hit.GetComponent<BoardSlot>();
-            if (slot == null)
-            {
-                transform.position = initialPos;
-                return false;
-            }
-            else
-            {
-                if (slot.isFilled)
-                {
-                    transform.position = initialPos;
-                    return false;
-                }
-            }
-        }
-
-        transform.position = initialPos;
-        return true;
     }
 
     void BindBlocksToBoard()
@@ -290,8 +214,7 @@ public class Piece : MonoBehaviour
         {
             if (block.currentSlot != null)
             {
-                block.currentSlot.currentBlock = block;
-                block.currentSlot.isFilled = true;
+                block.currentSlot.Fill(block);
             }
         }
     }
@@ -307,115 +230,4 @@ public class Piece : MonoBehaviour
             }
         }
     }
-
-    // void TrySnapToBoard()
-    // {
-    //     BoardSlot closestSlot = null;
-    //     float closestDistance = Mathf.Infinity;
-
-    //     // Find nearest slot to ANY block
-    //     foreach (Block block in blocks)
-    //     {
-    //         Collider2D hit = Physics2D.OverlapCircle(block.transform.position, 0.5f);
-
-    //         if (hit == null) continue;
-
-    //         BoardSlot slot = hit.GetComponent<BoardSlot>();
-    //         if (slot == null) continue;
-
-    //         float distance = Vector2.Distance(block.transform.position, slot.transform.position);
-
-    //         if (distance < closestDistance)
-    //         {
-    //             closestDistance = distance;
-    //             closestSlot = slot;
-    //         }
-    //     }
-
-    //     // Nothing found → return to last valid position
-    //     if (closestSlot == null)
-    //     {
-    //         transform.position = lastValidPos;
-    //         return;
-    //     }
-
-    //     // Snap the piece so that blocks align perfectly
-    //     transform.position = closestSlot.transform.position;
-
-    //     // Now check & bind each block
-    //     if (!ValidateBlocks())
-    //     {
-    //         transform.position = lastValidPos; // revert
-    //         ClearAllBlocksFromBoard();
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         foreach (Block block in blocks)
-    //         {
-    //             Collider2D hit = Physics2D.OverlapCircle(block.transform.position, 0.5f);
-    //             BoardSlot slot = hit.GetComponent<BoardSlot>();
-
-    //             slot.Fill(block);
-    //             block.currentSlot = slot;
-    //         }
-    //     }
-
-    //     lastValidPos = transform.position;
-    //     pieceSelectManager.DeselectCurrentPiece();
-
-    //     // Auto check board after placed
-    //     gameManager.CheckBoard();
-    // }
-
-    // bool ValidateBlocks()
-    // {
-    //     foreach (Block block in blocks)
-    //     {
-    //         Collider2D hit = Physics2D.OverlapCircle(block.transform.position, 0.5f);
-    //         if (hit == null) 
-    //         {
-    //             return false;
-    //         }
-
-    //         BoardSlot slot = hit.GetComponent<BoardSlot>();
-    //         if (slot == null) 
-    //         {
-    //             return false;
-    //         }
-
-    //         if (slot.isFilled) 
-    //         {
-    //             return false;
-    //         }
-    //     }
-
-    //     return true;
-    // }
-
-    // private BoardSlot FindNearestSlotAvailable()
-    // {
-    //     BoardSlot[] boardSlots = gameManager.GetBoardSlots();
-
-    //     BoardSlot nearestSlot = null;
-    //     float minDistance = Mathf.Infinity;
-
-    //     foreach(BoardSlot slot in boardSlots)
-    //     {
-    //         if(slot.isFilled) 
-    //         {
-    //             continue;
-    //         }
-
-    //         float distance = Vector2.Distance(transform.position, slot.transform.position);
-
-    //         if(distance < minDistance && distance <= snapRadius)
-    //         {
-    //             minDistance = distance;
-    //             nearestSlot = slot;
-    //         }
-    //     }
-
-    //     return nearestSlot;
-    // }
 }
