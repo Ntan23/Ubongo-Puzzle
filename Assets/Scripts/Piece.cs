@@ -7,7 +7,6 @@ public enum PieceType
     J,L,T,O,I,S,Z
 }
 
-
 public class Piece : MonoBehaviour
 {
     [Header("Piece Settings")]
@@ -21,7 +20,7 @@ public class Piece : MonoBehaviour
     private bool isSelected;
     private bool isRotating;
     private bool isMoving;
-    public bool isPlaced;
+    private bool isPlaced;
 
     [SerializeField] private Block[] blocks;
     [SerializeField] private LayerMask boardLayerMask;
@@ -192,9 +191,9 @@ public class Piece : MonoBehaviour
 
             snapPos = new Vector3(snappedX, snappedY, currentPivotPos.z);
 
-            if (snapPos.x % 1 == 0 || snapPos.y % 1 == 0)
+            if (snapPos.x % 1 != 0 || snapPos.y % 1 != 0)
             {
-                return false;
+                return false;  
             }
         }
         else

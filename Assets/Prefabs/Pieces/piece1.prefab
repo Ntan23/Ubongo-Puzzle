@@ -290,7 +290,7 @@ MonoBehaviour:
   pieceType: 5
   snapRadius: 0.1
   rotateDuration: 0.25
-  moveDuration: 0.25
+  moveDuration: 0.1
   isPlaced: 0
   blocks:
   - {fileID: 1896751217516763315}
