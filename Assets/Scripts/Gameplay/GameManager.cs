@@ -15,12 +15,25 @@ public class GameManager : MonoBehaviour
     #endregion
 
     [SerializeField] private BoardSlot[] boardSlots;
+    [SerializeField] private SceneLoader sceneLoader;
+    [SerializeField] private ParticleSystem winEfect;
+    [SerializeField] private GameObject winPopup;
+    [SerializeField] private Animator winPopupAnimator;
+
+    AudioManager audioManager;
+
+    void Start()
+    {
+        audioManager = AudioManager.instance;
+
+        winPopup.SetActive(false);
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SceneLoader.instance.RestartScene();
+            sceneLoader.RestartScene();
         }
     }
 
@@ -29,6 +42,11 @@ public class GameManager : MonoBehaviour
         if (IsBoardFillCorrectly())
         {
             Debug.Log("You Win!!");
+
+            winPopup.SetActive(true);
+            winPopupAnimator.Play("Show");
+            audioManager.PlayWinSFX();
+            winEfect.Play();
         }
     }
 

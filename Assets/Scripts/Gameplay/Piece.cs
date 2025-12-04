@@ -20,7 +20,6 @@ public class Piece : MonoBehaviour
     private bool isSelected;
     private bool isRotating;
     private bool isMoving;
-    private bool isPlaced;
 
     [SerializeField] private Block[] blocks;
     [SerializeField] private LayerMask boardLayerMask;
@@ -35,11 +34,13 @@ public class Piece : MonoBehaviour
 
     PieceSelectManager pieceSelectManager;
     GameManager gameManager;
+    AudioManager audioManager;
 
     void Start()
     {
         pieceSelectManager = PieceSelectManager.instance;
         gameManager = GameManager.instance;
+        audioManager = AudioManager.instance;
         cam = Camera.main;
 
         originalPos = transform.position;
@@ -74,7 +75,6 @@ public class Piece : MonoBehaviour
     {
         pieceSelectManager.SelectPiece(this);
         isDragging = false;
-        isPlaced = false;
 
         spriteRenderer.sortingOrder = 3;
 
@@ -143,8 +143,8 @@ public class Piece : MonoBehaviour
             StartCoroutine(MovePiece(snapPos));
 
             BindBlocksToBoard();
+            audioManager.PlayBlockSnapSFX();
 
-            isPlaced = true;
             spriteRenderer.sortingOrder = 2;
             particleEffect.Play();
 
