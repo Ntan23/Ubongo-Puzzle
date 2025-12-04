@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -15,39 +15,33 @@ public class GameManager : MonoBehaviour
     #endregion
 
     [SerializeField] private BoardSlot[] boardSlots;
-    [SerializeField] private Piece[] pieces;
 
-    // void Start()
-    // {
-    //     foreach(Piece piece in pieces)
-    //     {
-    //         piece.OnPieceReleased += HandlePieceReleased;
-    //     }
-    // }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SceneLoader.instance.RestartScene();
+        }
+    }
 
     public void CheckBoard()
     {
-        if(IsBoardFillCorrectly())
+        if (IsBoardFillCorrectly())
         {
             Debug.Log("You Win!!");
         }
-    } 
+    }
 
     private bool IsBoardFillCorrectly()
     {
-        foreach(BoardSlot slot in boardSlots)
+        foreach (BoardSlot slot in boardSlots)
         {
-            if(!slot.isFilled)
+            if (!slot.isFilled)
             {
                 return false;
             }
         }
 
         return true;
-    }
-
-    public BoardSlot[] GetBoardSlots()
-    {
-        return boardSlots;
     }
 }

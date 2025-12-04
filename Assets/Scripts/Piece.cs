@@ -1,10 +1,17 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public enum PieceType
+{
+    J,L,T,O,I,S,Z
+}
+
+
 public class Piece : MonoBehaviour
-{   
+{
+    [Header("Piece Settings")]
+    [SerializeField] private PieceType pieceType;
     [SerializeField] private float snapRadius;
     [SerializeField] private float rotateDuration;
     [SerializeField] private float moveDuration;
@@ -17,17 +24,18 @@ public class Piece : MonoBehaviour
     public bool isPlaced;
 
     [SerializeField] private Block[] blocks;
-    [SerializeField] private Transform[] blocksTransform;
-    [SerializeField] private float extraOffsetX;
-    [SerializeField] private float extraOffsetY;
+    [SerializeField] private LayerMask boardLayerMask;
+
+    [Header("Visual")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color unselectedColor;
+    [SerializeField] private ParticleSystem particleEffect;
     private Camera cam;
+
 
     PieceSelectManager pieceSelectManager;
     GameManager gameManager;
-    private Vector3 lastValidPos;
 
     void Start()
     {
@@ -35,20 +43,14 @@ public class Piece : MonoBehaviour
         gameManager = GameManager.instance;
         cam = Camera.main;
 
-        foreach(Block block in blocks)
-        {
-            block.piece = this;
-        }
-     
         originalPos = transform.position;
-        lastValidPos = transform.position;
     }
 
     void Update()
     {
-        if(isSelected && !isDragging)
+        if (isSelected && !isDragging)
         {
-            if(Input.GetKeyDown(KeyCode.R) && !isRotating)
+            if (Input.GetKeyDown(KeyCode.R) && !isRotating && !isMoving)
             {
                 StartCoroutine(RotatePiece());
             }
@@ -74,6 +76,8 @@ public class Piece : MonoBehaviour
         pieceSelectManager.SelectPiece(this);
         isDragging = false;
         isPlaced = false;
+
+        spriteRenderer.sortingOrder = 3;
 
         ClearAllBlocksFromBoard();
     }
@@ -102,14 +106,14 @@ public class Piece : MonoBehaviour
 
         float t = 0;
 
-        while(t < 1)
+        while (t < 1)
         {
             t += Time.deltaTime / moveDuration;
             transform.position = Vector3.Lerp(startPosition, targetPosition, t);
             yield return null;
         }
 
-        isPlaced = true;
+        isMoving = false;
         transform.position = targetPosition;
     }
 
@@ -119,16 +123,16 @@ public class Piece : MonoBehaviour
 
         Quaternion startAngle = transform.rotation;
         Quaternion targetAngle = startAngle * Quaternion.Euler(0, 0, 90f);
-        
+
         float t = 0;
 
-        while(t < 1f)
+        while (t < 1f)
         {
             t += Time.deltaTime / rotateDuration;
             transform.rotation = Quaternion.Lerp(startAngle, targetAngle, t);
             yield return null;
         }
-        
+
         transform.rotation = targetAngle;
         isRotating = false;
     }
@@ -138,14 +142,19 @@ public class Piece : MonoBehaviour
         if (IsValidAlignment(out Vector3 snapPos))
         {
             StartCoroutine(MovePiece(snapPos));
+
             BindBlocksToBoard();
+
+            isPlaced = true;
+            spriteRenderer.sortingOrder = 2;
+            particleEffect.Play();
 
             pieceSelectManager.DeselectCurrentPiece();
             gameManager.CheckBoard();
         }
         else
         {
-            transform.position = originalPos; 
+            StartCoroutine(MovePiece(originalPos));
         }
     }
 
@@ -153,30 +162,76 @@ public class Piece : MonoBehaviour
     {
         resultPos = Vector3.zero;
 
-        foreach(Block block in blocks)
+        BoardSlot[] hitSlots = new BoardSlot[blocks.Length];
+
+        for (int i = 0; i < blocks.Length; i++)
         {
-            if (block.currentSlot == null) return false;
-             
-            if (block.currentSlot != null && block.currentSlot.isFilled)
+            Block currentBlock = blocks[i];
+
+            Collider2D hit = Physics2D.OverlapPoint(currentBlock.transform.position, boardLayerMask);
+
+            if (hit == null) return false;
+
+            BoardSlot slot = hit.GetComponent<BoardSlot>();
+            if (slot == null) return false;
+
+            if (slot.isFilled) return false;
+
+            hitSlots[i] = slot;
+            currentBlock.currentSlot = slot;
+        }
+
+        Vector3 snapPos;
+
+        if (pieceType == PieceType.O || pieceType == PieceType.I)
+        {
+            Vector3 currentPivotPos = transform.position;
+
+            float snappedX = Mathf.Round(currentPivotPos.x * 2f) / 2f;
+            float snappedY = Mathf.Round(currentPivotPos.y * 2f) / 2f;
+
+            snapPos = new Vector3(snappedX, snappedY, currentPivotPos.z);
+
+            if (snapPos.x % 1 == 0 || snapPos.y % 1 == 0)
             {
                 return false;
             }
         }
-
-        foreach (Block block in blocks)
+        else
         {
-            Vector3 blockLocal = blocks[0].transform.localPosition;
-            Vector3 slotPos = block.currentSlot.transform.position;
+            Vector3 targetSlotPos = hitSlots[0].transform.position;
+            Vector3 blockLocalOffset = blocks[0].transform.localPosition;
 
-            Vector3 snapPos = slotPos - blockLocal;
-            snapPos.x = Mathf.RoundToInt(snapPos.x) + extraOffsetX;
-            snapPos.y = Mathf.RoundToInt(snapPos.y) + extraOffsetY;
-
-            resultPos = snapPos;
-            return true;
+            snapPos = targetSlotPos - blockLocalOffset;
         }
 
-        return false;
+        resultPos = snapPos;
+        return true;
+
+        // foreach (Block block in blocks)
+        // {
+        //     if (block.currentSlot == null) return false;
+
+        //     if (block.currentSlot != null && block.currentSlot.isFilled)
+        //     {
+        //         return false;
+        //     }
+        // }
+
+        // foreach (Block block in blocks)
+        // {
+        //     Vector3 blockLocal = blocks[0].transform.localPosition;
+        //     Vector3 slotPos = block.currentSlot.transform.position;
+
+        //     Vector3 snapPos = slotPos - blockLocal;
+        //     snapPos.x = Mathf.RoundToInt(snapPos.x) + extraOffsetX;
+        //     snapPos.y = Mathf.RoundToInt(snapPos.y) + extraOffsetY;
+
+        //     resultPos = snapPos;
+        //     return true;
+        // }
+
+        // return false;
     }
 
     // bool IsValidPlacement(Vector3 pos)
@@ -199,26 +254,26 @@ public class Piece : MonoBehaviour
     {
         Vector3 initialPos = transform.position;
         transform.position = pos;
-        
-        foreach(Block block in blocks)
+
+        foreach (Block block in blocks)
         {
             Collider2D hit = Physics2D.OverlapPoint(block.transform.position);
 
-            if(hit == null)
+            if (hit == null)
             {
                 transform.position = initialPos;
                 return false;
             }
 
             BoardSlot slot = hit.GetComponent<BoardSlot>();
-            if(slot == null)
+            if (slot == null)
             {
                 transform.position = initialPos;
                 return false;
             }
             else
             {
-                if(slot.isFilled)
+                if (slot.isFilled)
                 {
                     transform.position = initialPos;
                     return false;
@@ -234,7 +289,7 @@ public class Piece : MonoBehaviour
     {
         foreach (Block block in blocks)
         {
-            if(block.currentSlot != null)
+            if (block.currentSlot != null)
             {
                 block.currentSlot.currentBlock = block;
                 block.currentSlot.isFilled = true;
@@ -244,16 +299,14 @@ public class Piece : MonoBehaviour
 
     void ClearAllBlocksFromBoard()
     {
-        foreach(Block block in blocks)
+        foreach (Block block in blocks)
         {
-            if(block.currentSlot != null)
+            if (block.currentSlot != null)
             {
                 block.currentSlot.Clear();
                 block.currentSlot = null;
             }
         }
-
-        lastValidPos = originalPos;
     }
 
     // void TrySnapToBoard()

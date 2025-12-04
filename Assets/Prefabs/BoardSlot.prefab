@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7122694810255587669}
   - component: {fileID: 4185043561471434826}
   - component: {fileID: 6450024060397160270}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: BoardSlot
-  m_TagString: BoardSlot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,7 +134,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.9, y: 0.9}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &4185043561471434826
 Rigidbody2D:
