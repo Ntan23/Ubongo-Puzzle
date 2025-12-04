@@ -12,6 +12,8 @@ public class SceneLoader : MonoBehaviour
         {
             instance = this;
         }
+
+        DontDestroyOnLoad(gameObject);
     }
     #endregion
 
