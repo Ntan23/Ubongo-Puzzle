@@ -22,7 +22,7 @@ This ensures the game remains bug-free and visually precise by forcing pieces to
 
 ## 🛠️ Tech Stack & Tools
 * **Engine:** Unity 6000.0.53f1 [LTS]
-* **Scripting:** C# (C# 9.0+ features)
+* **Scripting:** C#
 * **Version Control:** Git
 * **Architecture:** Singleton Pattern and Modular Object-Oriented Design.
 
